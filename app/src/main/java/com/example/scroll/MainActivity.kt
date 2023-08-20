@@ -4,15 +4,20 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 
 import androidx.compose.material.*
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -58,6 +63,7 @@ class MainActivity : ComponentActivity() {
         Spacer(modifier = Modifier.height(70.dp))
         val animal = liveAnimals.value
         val kewan by liveAnimals.observeAsState(initial = emptyList())
+        val listState = rememberLazyGridState()
        LazyVerticalGrid(columns = GridCells.Fixed(2), content ={
            /*
            animal?.forEach(){anim->
@@ -66,20 +72,50 @@ class MainActivity : ComponentActivity() {
                }
            }
             */
+         itemsIndexed(kewan){ins,kewans->
+             if(ins == kewan.lastIndex){
+                 viewModel.getAnimals()
+             }
+             Log.e("indek","${ins}")
+             Column(
+                 Modifier
+                     .height(300.dp)
+                     .width(50.dp)) {
+                 Text(text = "${kewans.name}")
+                 Spacer(modifier = Modifier.height(200.dp))
+             }
+         }
+         /*
            kewan?.forEachIndexed { index, animalss ->
+
                      if(index == kewan.lastIndex){
                          viewModel.getAnimals()
                          
                      }
+
+
                      //viewModel.getAnimals()
 
                Log.e("indek","${index}")
                item{
-                   Text(text = "${animalss.name}")
-                   Spacer(modifier = Modifier.height(200.dp))
+                   Column(
+                       Modifier
+                           .height(300.dp)
+                           .width(50.dp)) {
+                       Text(text = "${animalss.name}")
+                       Spacer(modifier = Modifier.height(200.dp))
+                   }
                }
            }
+           //Log.e("lastanimal","${kewan.last().name}")
+
+          */
        } )
+
+
+
+
+
         //Text(text = "hallo class animalist")
         //val animals by liveAnimals.observeAsState(initial = emptyList())
         /*
